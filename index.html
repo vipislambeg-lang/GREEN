@@ -504,14 +504,55 @@ section{padding:90px 0;position:relative}
 }
 .modal-body h3{
   font-size:26px;
-  margin-bottom:16px;
+  margin-bottom:8px;
   color:var(--ink);
+}
+.modal-body .subtitle{
+  font-size:15px;
+  color:var(--muted);
+  margin-bottom:16px;
 }
 .modal-body .desc{
   font-size:15px;
   color:var(--ink-soft);
   line-height:1.7;
+  margin-bottom:20px;
+}
+.modal-list{
+  list-style:none;
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+  padding:20px;
+  background:var(--bg-alt);
+  border-radius:14px;
   margin-bottom:24px;
+  border:1px solid rgba(46,125,79,.08);
+}
+.modal-list li{
+  position:relative;
+  padding-left:26px;
+  font-size:14px;
+  color:var(--ink-soft);
+  line-height:1.55;
+}
+.modal-list li::before{
+  content:"";
+  position:absolute;
+  left:0;
+  top:6px;
+  width:14px;height:14px;
+  border-radius:50%;
+  background:var(--accent-soft);
+}
+.modal-list li::after{
+  content:"";
+  position:absolute;
+  left:4px;
+  top:9px;
+  width:6px;height:6px;
+  border-radius:50%;
+  background:var(--accent);
 }
 .modal-specs{
   display:flex;
@@ -544,21 +585,34 @@ section{padding:90px 0;position:relative}
 }
 .modal-cta .btn{flex:1;justify-content:center;min-width:180px}
 
+/* CTA с фоновым фото сервиса */
 .cta{
-  background:
-    radial-gradient(700px 350px at 50% 0%, rgba(124,195,143,.22), transparent 60%),
-    linear-gradient(180deg, #f0f7ed 0%, #e5f0e1 100%);
+  position:relative;
   color:var(--ink);
-  padding:80px 0;position:relative;overflow:hidden;
+  padding:100px 0;
+  overflow:hidden;
+  background:
+    linear-gradient(180deg, rgba(240,247,237,.75) 0%, rgba(229,240,225,.85) 100%),
+    url("сервис.jpg") center/cover no-repeat;
 }
 .cta::before{
-  content:"";position:absolute;inset:0;
-  background:radial-gradient(600px 300px at 80% 100%, rgba(185,154,78,.08), transparent 60%);
+  content:"";
+  position:absolute;inset:0;
+  background:
+    radial-gradient(700px 350px at 50% 0%, rgba(124,195,143,.18), transparent 60%),
+    radial-gradient(600px 300px at 80% 100%, rgba(185,154,78,.10), transparent 60%);
   pointer-events:none;
 }
-.cta-inner{position:relative;text-align:center;max-width:720px;margin:0 auto}
-.cta h2{font-size:clamp(28px,3.4vw,44px);margin-bottom:16px;color:var(--ink)}
-.cta p{font-size:16px;color:var(--ink-soft);margin-bottom:28px}
+.cta-inner{position:relative;text-align:center;max-width:720px;margin:0 auto;z-index:1}
+.cta h2{
+  font-size:clamp(28px,3.4vw,44px);
+  margin-bottom:16px;color:var(--ink);
+  text-shadow:0 1px 14px rgba(251,252,249,.7);
+}
+.cta p{
+  font-size:16px;color:var(--ink-soft);margin-bottom:28px;
+  text-shadow:0 1px 10px rgba(251,252,249,.6);
+}
 .cta-buttons{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
 .btn-white{
   background:#fff;color:var(--accent);
@@ -666,6 +720,7 @@ footer{background:#eef4ea;color:var(--ink-soft);padding:48px 0 26px;border-top:1
     font-size:15px;
   }
   .company-video{margin-top:28px;border-radius:16px}
+  .cta{padding:72px 0}
 }
 @media (max-width:400px){
   .hero h1{
@@ -885,7 +940,9 @@ footer{background:#eef4ea;color:var(--ink-soft);padding:48px 0 26px;border-top:1
       <div class="modal-body">
         <div class="modal-tag" id="modal-tag">Стартовый набор</div>
         <h3 id="modal-title"></h3>
+        <p class="subtitle" id="modal-subtitle"></p>
         <p class="desc" id="modal-desc"></p>
+        <ul class="modal-list" id="modal-list"></ul>
         <div class="modal-specs">
           <div class="modal-spec">
             <span class="lbl">Стоимость</span>
@@ -1088,7 +1145,9 @@ sections.forEach(s => {
 const modalClose = document.getElementById('modal-close');
 const modalImg = document.getElementById('modal-img');
 const modalTitle = document.getElementById('modal-title');
+const modalSubtitle = document.getElementById('modal-subtitle');
 const modalDesc = document.getElementById('modal-desc');
+const modalList = document.getElementById('modal-list');
 const modalTag = document.getElementById('modal-tag');
 const kitButtons = document.querySelectorAll('.kit-link');
 
@@ -1096,19 +1155,48 @@ const kitData = {
   beige: {
     tag: 'Стартовый набор · Бежевый',
     title: 'Набор «Бежевый»',
-    desc: 'Уход за лицом Sealuxe и товары для дома и гигиены. В набор входят: тоник для лица Renewing Skin Toner, эмульсия Brightening Emulsion, очищающий крем Softening Cleansing Cream, восстанавливающий крем Repairing Cream, стиральный порошок iLife Laundry Detergent 1 кг, средство для мытья посуды iLife Dishwashing Liquid 1 кг, бамбуковые салфетки и зубная паста iLife Natural Seaweed Toothpaste. Идеальный старт для тех, кто ценит качество.',
+    subtitle: 'Уход за лицом Sealuxe + товары для дома',
+    desc: 'Базовый набор для тех, кто ценит качественный уход и чистоту дома. Подходит для старта и ежедневного использования.',
+    items: [
+      'Уход за лицом Sealuxe, 4 предмета: тоник Renewing Skin Toner, эмульсия Brightening Emulsion, очищающий крем Softening Cleansing Cream, восстанавливающий крем Repairing Cream',
+      'Жидкое средство для стирки iLife Laundry Detergent, 1 кг',
+      'Средство для мытья посуды iLife, 1 кг',
+      'Бамбуковые салфетки для лица Carich',
+      'Прокладки iLife, 10 шт.',
+      'Зубная паста iLife на основе морских водорослей'
+    ],
     img: 'beige.jpg'
   },
   cup: {
     tag: 'Стартовый набор · Стакан',
     title: 'Набор «Стакан»',
-    desc: 'Стакан-ионизатор Kardli, шампунь, зубные пасты и щётки — всё для ежедневного ухода за здоровьем и гигиеной. Стакан-ионизатор позволяет получать структурированную воду, полезную для организма. В набор также входят средства личной гигиены и ухода за полостью рта. Отличный выбор для тех, кто заботится о здоровье семьи.',
+    subtitle: 'Стакан-ионизатор Kardli и средства гигиены',
+    desc: 'Набор для здоровья и ежедневной гигиены всей семьи. В основе — стакан-ионизатор для структурированной воды.',
+    items: [
+      'Стакан-ионизатор Kardli для здоровой воды (золотистый, в подарочной коробке)',
+      'Три зубные щётки Carich',
+      'Бумажные полотенца в рулоне (рулон с сотовой текстурой)',
+      'Шампунь Greenleaf Refreshing Shampoo (растительная формула)',
+      'Зубная паста iLife с водорослями — три упаковки',
+      'Ночные прокладки iLife, 8 шт., 225 мм'
+    ],
     img: 'cup.jpg'
   },
   purple: {
     tag: 'Стартовый набор · Фиолетовый',
     title: 'Набор «Фиолетовый»',
-    desc: 'Sealuxe Bifida Yeast — антивозрастной уход премиум-класса и товары для дома. Линейка Bifida Yeast основана на ферментированных ингредиентах, которые глубоко восстанавливают кожу, повышают её эластичность и замедляют процессы старения. В набор входят средства для ежедневного ухода за лицом и телом, а также товары для дома.',
+    subtitle: 'Sealuxe Bifida Yeast, антивозрастной уход',
+    desc: 'Премиальный антивозрастной набор на ферментированных дрожжах бифида + товары для дома.',
+    items: [
+      'Антивозрастной уход на дрожжах бифида: 4 основных флакона (пенка-тюбик 100 г, тоник, лосьон или эмульсия, сыворотка)',
+      'Три маленькие баночки с кремом',
+      'Три маленьких тюбика',
+      'Бамбуковые салфетки для лица',
+      'Зубная паста iLife с водорослями',
+      'Прокладки iLife, 10 шт.',
+      'Жидкое средство для стирки iLife, 1 кг',
+      'Средство для мытья посуды iLife, 1 кг'
+    ],
     img: 'purple.jpg'
   }
 };
@@ -1118,7 +1206,14 @@ function openModal(kitId) {
   if (!data) return;
   modalTag.textContent = data.tag;
   modalTitle.textContent = data.title;
+  modalSubtitle.textContent = data.subtitle;
   modalDesc.textContent = data.desc;
+  modalList.innerHTML = '';
+  data.items.forEach(item => {
+    const li = document.createElement('li');
+    li.textContent = item;
+    modalList.appendChild(li);
+  });
   modalImg.src = data.img;
   modalImg.alt = data.title;
   const modalScroll = modalOverlay.querySelector('.modal-scroll');
