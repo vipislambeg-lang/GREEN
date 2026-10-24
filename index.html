@@ -113,8 +113,7 @@ header.scrolled{
     radial-gradient(1200px 600px at 80% -10%, rgba(124,195,143,.10), transparent 60%),
     radial-gradient(900px 500px at -10% 40%, rgba(185,154,78,.05), transparent 60%),
     linear-gradient(180deg, #fbfcf9 0%, #f3f8f0 100%);
-  overflow-x:clip;
-  overflow-y:visible;
+  overflow:visible;
 }
 .hero::before{
   content:"";
@@ -142,12 +141,11 @@ header.scrolled{
 }
 .hero-grid{
   display:grid;
-  grid-template-columns:1.35fr .65fr;
+  grid-template-columns:minmax(0, 1.3fr) minmax(0, .7fr);
   gap:48px;
   align-items:center;
-  min-width:0;
 }
-.hero-grid > div{
+.hero-grid > *{
   min-width:0;
 }
 .eyebrow{
@@ -162,7 +160,7 @@ header.scrolled{
 .eyebrow::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--accent-2);box-shadow:0 0 0 4px rgba(76,165,110,.15)}
 .hero h1{
   font-size:clamp(26px,3.6vw,48px);
-  line-height:1.12;
+  line-height:1.15;
   font-weight:800;
   margin-bottom:18px;
   color:var(--ink);
@@ -170,18 +168,6 @@ header.scrolled{
   word-break:normal;
   hyphens:none;
   text-shadow:0 1px 12px rgba(251,252,249,.6);
-}
-.hero h1 .accent{
-  color:var(--accent);
-  font-style:italic;
-  font-weight:500;
-  white-space:nowrap;
-  background:linear-gradient(135deg,var(--accent) 0%,var(--accent-2) 100%);
-  -webkit-background-clip:text;
-  background-clip:text;
-  -webkit-text-fill-color:transparent;
-  display:inline-block;
-  max-width:100%;
 }
 .hero p.lead{
   font-size:16px;color:var(--ink-soft);max-width:520px;margin-bottom:28px;
@@ -263,12 +249,6 @@ header.scrolled{
   text-shadow:0 2px 16px rgba(0,0,0,.3);
 }
 .hero-visual .big .role{font-size:14px;opacity:.9;text-shadow:0 1px 10px rgba(0,0,0,.3)}
-.leaf{
-  position:absolute;font-size:180px;opacity:.12;color:#fff;
-  top:50%;left:50%;transform:translate(-50%,-50%) rotate(-15deg);
-  font-family:'Manrope';font-weight:800;
-  z-index:1;
-}
 
 section{padding:90px 0;position:relative}
 .section-head{max-width:720px;margin-bottom:44px}
@@ -797,7 +777,7 @@ footer{background:#eef4ea;color:var(--ink-soft);padding:48px 0 26px;border-top:1
   <div class="container hero-grid">
     <div class="reveal">
       <div class="eyebrow">Официальный партнёр · Махачкала</div>
-      <h1>Начни своё дело вместе с <span class="accent">GreenLeaf</span></h1>
+      <h1>Начни своё дело вместе с GreenLeaf</h1>
       <p class="lead">Знания, инструменты и личное сопровождение. Даже без опыта и больших вложений — выход на стабильный заработок с поддержкой на каждом шаге.</p>
       <div class="hero-cta">
         <a href="https://wa.me/qr/XV4PADUYJN6CE1" class="btn btn-primary">
@@ -811,7 +791,6 @@ footer{background:#eef4ea;color:var(--ink-soft);padding:48px 0 26px;border-top:1
     <div class="hero-visual reveal reveal-delay-2">
       <img src="partner.jpg" alt="Магомедбег Хирамагомедов — партнёр GreenLeaf" class="hero-photo">
       <div class="hero-overlay"></div>
-      <div class="leaf">G</div>
       <div class="badge"><span>GREENLEAF</span><span>EST. 1998</span></div>
       <div class="big">
         <div class="name">Магомедбег<br>Хирамагомедов</div>
